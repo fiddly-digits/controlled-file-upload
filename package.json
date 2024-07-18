@@ -1,0 +1,24 @@
+{
+  "name": "controlled-file-upload",
+  "version": "1.0.0",
+  "description": "Controled File Upload Project",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fiddly-digits",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "tailwindcss": "^3.4.6"
+  },
+  "keywords": []
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./output.css" rel="stylesheet" />
+    <title>File Upload</title>
+  </head>
+  <body class="w-full h-screen flex items-center justify-center">
+    <div class="w-full max-w-md border-dotted border-slate-800 border-4 p-4">
+      <div>
+        <h1 class="font-bold text-slate-800 text-xl">Controlled File Upload</h1>
+      </div>
+      <form
+        action="/upload"
+        method="post"
+        enctype="multipart/form-data"
+        class="grid gap-2"
+      >
+        <label for="file" class="text-slate-800">Select File:</label>
+        <input type="file" name="file" id="file" class="hidden" />
+        <button
+          type="button"
+          id="customButton"
+          class="bg-slate-800 text-white py-2 px-4 rounded"
+        >
+          Choose File
+        </button>
+        <span id="fileName" class="mt-2 text-slate-800 text-center"></span>
+        <img
+          id="filePreview"
+          class="mt-2 hidden h-40 self-center mx-auto"
+          alt="File Preview"
+        />
+        <br />
+        <div class="grid gap-1">
+          <div>
+            <label for="captcha" class="text-slate-800 font-semibold"
+              >Enter CAPTCHA:</label
+            >
+            <input
+              type="text"
+              id="captchaInput"
+              class="border rounded h-6 mr-2 focus:outline-none"
+            />
+            <span id="captchaText" class="ml-2" />
+          </div>
+          <button
+            type="button"
+            id="generateCaptcha"
+            class="bg-gray-500 text-white py-1 px-2 rounded"
+          >
+            Generate CAPTCHA
+          </button>
+        </div>
+        <button
+          type="submit"
+          class="bg-slate-800 text-white py-2 px-4 rounded hidden"
+        >
+          Upload File
+        </button>
+      </form>
+    </div>
+    <script>
+      document
+        .getElementById('customButton')
+        .addEventListener('click', function () {
+          document.getElementById('file').click();
+        });
+
+      document.getElementById('file').addEventListener('change', function () {
+        const file = this.files[0];
+        const fileName = file ? file.name : 'No file chosen';
+        document.getElementById('fileName').textContent = fileName;
+
+        const uploadButton = document.querySelector('button[type="submit"]');
+
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const preview = document.getElementById('filePreview');
+            preview.src = e.target.result;
+            preview.classList.remove('hidden');
+            uploadButton.classList.remove('hidden');
+          };
+          reader.readAsDataURL(file);
+        } else {
+          document.getElementById('filePreview').classList.add('hidden');
+          uploadButton.classList.add('hidden');
+        }
+      });
+
+      document
+        .getElementById('generateCaptcha')
+        .addEventListener('click', function () {
+          const captchaText = Math.random().toString(36).substring(2, 8);
+          document.getElementById('captchaText').textContent = captchaText;
+        });
+
+      document.querySelector('form').addEventListener('submit', function (e) {
+        const captchaInput = document.getElementById('captchaInput').value;
+        const captchaText = document.getElementById('captchaText').textContent;
+
+        if (captchaInput !== captchaText) {
+          e.preventDefault();
+          alert('CAPTCHA verification failed.');
+        }
+      });
+    </script>
+  </body>
+</html>
